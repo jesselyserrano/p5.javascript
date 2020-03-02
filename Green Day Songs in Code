@@ -1,0 +1,117 @@
+let fft;
+let volhistory=[];
+let w;
+
+let song1, song2, song3, song4;
+let song;
+let songs = [];
+let button;
+
+let col = {
+  r: 255,
+  g: 0,
+  b: 0
+}
+
+let input;
+let volume;
+let counter=0;
+
+function preload(){
+song1= loadSound("GreenMix.mp3");
+  song2= loadSound("Merican.mp3");
+  song3= loadSound("kerp.mp3");
+  song4= loadSound("bang.mp3");
+}
+
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  songs = [song1, song2, song3, song4];
+  // button = createButton("play");
+  // button.mousePressed(togglePlaying);
+  background(0);
+  
+  //set up your mic input
+  input = new p5.AudioIn();
+  input.start();
+  
+  colorMode(HSB);
+  angleMode(DEGREES);
+  //song.play();
+  fft = new p5.FFT(0.9, 256);
+  w=width/64
+
+   song = songs[counter%songs.length];  
+  
+   song.loop();
+  counter = counter+1;
+  setInterval(changeSong, 3000);
+}
+
+function changeBackground(col) {
+//background(random(255), random (255), random (255));
+  background(col);
+}
+
+function draw() {
+   //get the current level
+  volume = input.getLevel(0.9);
+    //console.log(volume);
+  volume*=1.4;
+  //here we map the current level into a useful range
+    let inVal = map(volume, 0, -0.1, 0, 500);
+  
+  //let inVal = map(volume, 0, 0.3, 0, 400);
+  let colorVal = map(volume,0,0.3, 0, 255);
+   var spectrum = fft.analyze();
+  noStroke();
+   translate(width/ windowWidth, height / 8);
+  
+  for (var i = 0; i < spectrum.length; i++) {
+    var amp = spectrum[i];
+    var y = map(amp, 0, 256, height, 0);
+     //fill (i, random (70), random(155));
+    fill(i, 255, 255);
+    rect(i * w, y, w - 8, height - y);
+    
+    stroke(i, 255, 255);}
+  stroke(255);
+  noFill();
+  translate(width/2, height/2);
+  
+    fill(colorVal,90,220);
+  ellipse(-90,-90,inVal);
+  ellipse(130,130,inVal);
+
+  fill(random(230, 102), random(0, 255), random(0, 102));
+  ellipse(24, 24, inVal);
+}
+
+function togglePlaying() { 
+    
+  if (!song.isPlaying()) {
+    song.play();
+    song.setVolume(0.8);
+    button.html("pause");
+  } else {
+    song.stop();
+    button.html("play");
+  }
+   counter+=1;
+}
+
+function changeSong(){
+  if(song.isPlaying()){
+  song.stop();
+  }
+  
+  
+ 
+ song = songs[counter%songs.length];  
+  
+  let duration = song.duration();
+  song.jump(random(0, duration));
+  counter+=1;
+
+}
