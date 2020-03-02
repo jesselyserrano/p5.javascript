@@ -1,0 +1,88 @@
+var on = false;
+var on2 = false;
+var on3 = false;
+
+var r = 0;
+var g = 0;
+var b = 0;
+//var sizeX = 100
+var sizeY = 100
+
+
+function setup() {
+  createCanvas(500, 500);
+  background(0);
+}
+
+function draw() {
+  
+  rectMode(CENTER);
+  //blendMode(DIFFERENCE);
+    
+  r = map(mouseX, 0, 400, 0, 255);
+  g = map(mouseY, 0, 400, 255, 0);
+  b = map(mouseX, 0, 400, 255, 0);
+  
+  sizeX = map(mouseX, 400, 200, 100, 800);
+
+  //function for first square
+  if (on) { 
+    noStroke(); //stroke for random colors
+    fill(random(255), random(255), random(255), random(200,255));
+    ellipse(random(500), random(500), sizeX, 50);
+  }
+
+  if (on3) {
+    noStroke();
+    fill(r,g, b, 20);
+    rect(mouseX, mouseY, random(300, 500), random(300, 500));
+  }
+
+  if (on2) {
+    fill(random(255));
+    //triangle(random(-200, 200), random(-200, 200), random(700), random(700), random(700), random(700),);
+  }
+
+
+  if (mouseX > 50 && mouseX < 150 && mouseY > 200 && mouseY < 300) {
+    fill(0, 0, 255);
+    if (mouseIsPressed) {
+      on = !on;
+    }
+  } else {
+    noFill();
+  }
+
+  strokeWeight(5);
+  stroke(255);
+  rect(100, 250, 100, 100);
+
+  //Middle square function
+  
+  if (mouseX > 150 && mouseX < 350 && mouseY > 200 && mouseY < 300) {
+    fill(255, 0, 0);//red
+    
+    if (mouseIsPressed) {
+      on2 = !on2;
+    }
+  } else {
+    noFill();
+  }
+  rect(250, 250, 100, 100); //middle square
+
+//Last Square
+  if (mouseX > 350 && mouseX < 450 && mouseY > 200 && mouseY < 300) {
+   fill(0, 255, 0);//green
+    //if (mouseIsPressed) {
+      //on3 = !on3;
+    //}
+  }
+//green rectangle
+else {
+   noFill();
+  }
+  
+  strokeWeight(5);
+  rect(400, 250, 100, 100);
+
+}
