@@ -1,0 +1,32 @@
+let imgs = [];
+let img;
+let numImgs = 5;
+let counter = 0;
+
+function preload(){
+  img = loadImage("juice.png");
+
+}
+
+
+function setup() {
+  createCanvas(400, 400);
+  imgs[0]= img.get (0, 0, 352, 400);
+  imgs[1]= img.get (360,0, 350, 400);
+  imgs[2]= img.get (0, 400,350, 400);
+  imgs[3]= img.get (360, 400, 350, 400);
+  imgs[4]= img.get (20, 0, 350, 400);
+  
+  //for(let i = 0; i < numImgs; i++){
+   // imgs[i] = img.get(i*300, 0, 300,500); 
+  //}
+  
+}
+
+function draw() {
+  background(220);
+  
+  //image (img[1], 100, 50, 180, 200);
+ image(imgs[int(counter%numImgs)], 100, 50, 200, 300);
+  counter+=0.05
+}
